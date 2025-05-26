@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- Configuración básica y metaetiquetas -->
+    <meta charset="UTF-8" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Viewport para diseño responsivo -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Hoja de estilos personalizada ubicada en /static/styles.css -->
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Botón para mostrar/ocultar el menú lateral en dispositivos móviles -->
+        <button class="mobile-menu-btn" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Overlay que cubre el contenido cuando el menú lateral está abierto en móvil,
+             permite cerrar el menú al hacer clic -->
+        <div class="sidebar-overlay" onclick="closeSidebar()"></div>
+
+        <!-- Menú lateral o sidebar con navegación principal -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <!-- Logo y nombre del sistema -->
+                <a href="#" class="logo">
+                    <i class="fas fa-scale-balanced"></i>
+                    <span>LegalDesk</span>
+                </a>
+            </div>
+
+            <!-- Navegación principal del sidebar, dividida en secciones -->
+            <nav class="sidebar-nav">
+
+                <!-- Sección Dashboard -->
+                <div class="nav-section">
+                    <div class="nav-section-title">Dashboard</div>
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Overview</span>
+                    </a>
+                    <!-- Enlace activo a cotizaciones -->
+                    <a href="#" class="nav-link active">
+                        <i class="fas fa-file-invoice-dollar"></i>
+                        <span>Cotizaciones</span>
+                    </a>
+                </div>
+
+                <!-- Sección Gestión -->
+                <div class="nav-section">
+                    <div class="nav-section-title">Gestión</div>
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-users"></i>
+                        <span>Clientes</span>
+                    </a>
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-folder"></i>
+                        <span>Casos</span>
+                    </a>
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-calendar"></i>
+                        <span>Calendario</span>
+                    </a>
+                </div>
+
+                <!-- Sección Configuración -->
+                <div class="nav-section">
+                    <div class="nav-section-title">Configuración</div>
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-cog"></i>
+                        <span>Ajustes</span>
+                    </a>
+                    <!-- Enlace para cerrar sesión -->
+                    <a href="/logout" class="nav-link">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Cerrar sesión</span>
+                    </a>
+                </div>
+            </nav>
+        </aside>
+
+        <!-- Contenido principal de la página -->
+        <main class="main-content">
+            <!-- Encabezado principal -->
+            <header class="main-header">
+                <h1>Formulario de Cotización Legal</h1>
+                <p style="color: var(--text-secondary); margin-top: 0.25rem;">
+                    Genera cotizaciones profesionales para tus servicios legales
+                </p>
+            </header>
+
+            <div class="main-body">
+                <!-- Tarjetas de estadísticas rápidas -->
+                <div class="dashboard-grid">
+                    <!-- Card Cotizaciones este mes -->
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">Cotizaciones Este Mes</div>
+                            <div class="stat-card-icon"
+                                style="background: linear-gradient(135deg, var(--accent-color), #2563eb);">
+                                <i class="fas fa-file-invoice"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-value">127</div>
+                        <div class="stat-card-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+12% vs mes anterior</span>
+                        </div>
+                    </div>
+
+                    <!-- Card Ingresos proyectados -->
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">Ingresos Proyectados</div>
+                            <div class="stat-card-icon"
+                                style="background: linear-gradient(135deg, var(--success-color), #059669);">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-value">S/ 45,200</div>
+                        <div class="stat-card-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+8% vs mes anterior</span>
+                        </div>
+                    </div>
+
+                    <!-- Card Tasa de conversión -->
+                    <div class="stat-card">
+                        <div class="stat-card-header">
+                            <div class="stat-card-title">Tasa de Conversión</div>
+                            <div class="stat-card-icon"
+                                style="background: linear-gradient(135deg, var(--warning-color), #d97706);">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                        </div>
+                        <div class="stat-card-value">68%</div>
+                        <div class="stat-card-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+3% vs mes anterior</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario para crear una nueva cotización -->
+                <div class="form-container">
+                    <div class="form-header">
+                        <h2>Nueva Cotización</h2>
+                        <p>Completa los datos del cliente y servicio requerido</p>
+                    </div>
+
+                    <div class="form-body">
+                        <form action="/cotizacion" method="post" id="form-cotizacion" class="form-grid">
+                            <!-- Nombre del cliente -->
+                            <div>
+                                <label for="nombre">Nombre del cliente:</label>
+                                <input type="text" id="nombre" name="nombre" class="form-input" />
+                            </div>
+
+                            <!-- Email del cliente -->
+                            <div>
+                                <label for="email">Correo electrónico:</label>
+                                <input type="email" id="email" name="email" class="form-input" />
+                            </div>
+
+                            <!-- Selección del tipo de servicio -->
+                            <div class="form-group">
+                                <label for="tipo_servicio" class="form-label">
+                                    <i class="fas fa-briefcase"></i> Tipo de servicio
+                                </label>
+                                <select id="tipo_servicio" name="tipo_servicio" class="form-select">
+                                    <option value="" disabled selected>Seleccione un servicio</option>
+                                    <option value="Constitución de empresa">Constitución de empresa</option>
+                                    <option value="Defensa laboral">Defensa laboral</option>
+                                    <option value="Consultoría tributaria">Consultoría tributaria</option>
+                                </select>
+                            </div>
+
+                            <!-- Descripción detallada del caso -->
+                            <div class="form-group">
+                                <label for="descripcion" class="form-label">
+                                    <i class="fas fa-align-left"></i> Descripción del caso
+                                </label>
+                                <textarea id="descripcion" name="descripcion" rows="4" class="form-textarea"
+                                    required></textarea>
+                            </div>
+
+                            <!-- Botón para enviar el formulario y generar cotización -->
+                            <button type="submit" class="form-button">
+                                <i class="fas fa-calculator"></i> Generar Cotización
+                            </button>
+                        </form>
+
+                        <!-- Contenedor donde se mostrará el resultado de la cotización generada -->
+                        <div id="resultado" class="result-container" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Script para manejar el envío asíncrono del formulario y mostrar resultados sin recargar -->
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('form-cotizacion');
+        const resultado = document.getElementById('resultado');
+
+        form.addEventListener('submit', async e => {
+            e.preventDefault(); // Prevenir recarga del formulario
+            resultado.style.display = 'block'; // Mostrar contenedor resultado
+            resultado.innerHTML = `<div class="loading"><div class="spinner"></div> Generando cotización...</div>`;
+
+            const data = new FormData(form);
+
+            // Petición POST a /cotizacion con los datos del formulario
+            const response = await fetch('/cotizacion', {
+                method: 'POST',
+                body: data
+            });
+
+            if (response.ok) {
+                const json = await response.json();
+
+                // Mostrar la cotización generada en un card con botón para cerrar
+                resultado.innerHTML = `
+                <div class="cotizacion-card">
+                    <button class="close-btn" title="Cerrar">&times;</button>
+                    <h3>Cotización Generada</h3>
+                    <p><strong>Número:</strong> ${json.numero_cotizacion}</p>
+                    <p><strong>Cliente:</strong> ${json.cliente}</p>
+                    <p><strong>Email:</strong> ${json.email}</p>
+                    <p><strong>Tipo de servicio:</strong> ${json.tipo_servicio}</p>
+                    <p><strong>Descripción:</strong> ${json.descripcion}</p>
+                    <p class="result-price"><strong>Precio:</strong> S/ ${json.precio.toFixed(2)}</p>
+                    <p><strong>Fecha:</strong> ${json.fecha}</p>
+                </div>`;
+
+                form.reset(); // Limpiar campos del formulario
+
+                // Añadir evento para cerrar la tarjeta de resultado
+                resultado.querySelector('.close-btn').addEventListener('click', () => {
+                    resultado.style.display = 'none';
+                    resultado.innerHTML = '';
+                });
+
+            } else {
+                // Mostrar mensaje de error en caso de fallo en la petición
+                resultado.textContent = 'Error al generar la cotización.';
+            }
+        });
+    });
+    </script>
+
+</body>
+
+</html>

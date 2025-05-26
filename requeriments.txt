@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+jinja2
+python-multipart
+sqlite3
+requests
+openai
+itsdangerous
+openai
