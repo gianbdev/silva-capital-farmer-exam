@@ -20,7 +20,7 @@ Este sistema permite generar cotizaciones legales personalizadas para clientes d
 1. Clonar el repositorio  
 
    ```bash
-   git clone https://github.com/gdev/silva-capital-farmer-exam.git```  
+   git clone https://github.com/gdev/silva-capital-farmer-exam.git
    ```
    
    ```bash
