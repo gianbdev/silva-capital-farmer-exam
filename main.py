@@ -9,8 +9,8 @@ from datetime import datetime
 import sqlite3
 import uuid
 from openai import OpenAI
-
 import os
+
 openai_key = os.getenv("OPENAI_API_KEY")  # Cargar desde .env
 
 # Importamos lo del auth
@@ -24,7 +24,6 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 app.add_middleware(SessionMiddleware, secret_key="7c969c170f14fce3adbfc192d2e3494b9b2f6501fe567c3acf1e4d851765ec93")
 
 templates = Jinja2Templates(directory="templates")
-
 
 def init_db():
     """
