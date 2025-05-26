@@ -203,55 +203,106 @@
 
     <!-- Script para manejar el envío asíncrono del formulario y mostrar resultados sin recargar -->
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
-        const form = document.getElementById('form-cotizacion');
-        const resultado = document.getElementById('resultado');
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.getElementById('form-cotizacion');
+            const resultado = document.getElementById('resultado');
 
-        form.addEventListener('submit', async e => {
-            e.preventDefault(); // Prevenir recarga del formulario
-            resultado.style.display = 'block'; // Mostrar contenedor resultado
-            resultado.innerHTML = `<div class="loading"><div class="spinner"></div> Generando cotización...</div>`;
+            form.addEventListener('submit', async e => {
+                e.preventDefault(); // Prevenir recarga del formulario
+                resultado.style.display = 'block'; // Mostrar contenedor resultado
+                resultado.innerHTML = `<div class="loading"><div class="spinner"></div> Generando cotización...</div>`;
 
-            const data = new FormData(form);
+                const data = new FormData(form);
 
-            // Petición POST a /cotizacion con los datos del formulario
-            const response = await fetch('/cotizacion', {
-                method: 'POST',
-                body: data
-            });
-
-            if (response.ok) {
-                const json = await response.json();
-
-                // Mostrar la cotización generada en un card con botón para cerrar
-                resultado.innerHTML = `
-                <div class="cotizacion-card">
-                    <button class="close-btn" title="Cerrar">&times;</button>
-                    <h3>Cotización Generada</h3>
-                    <p><strong>Número:</strong> ${json.numero_cotizacion}</p>
-                    <p><strong>Cliente:</strong> ${json.cliente}</p>
-                    <p><strong>Email:</strong> ${json.email}</p>
-                    <p><strong>Tipo de servicio:</strong> ${json.tipo_servicio}</p>
-                    <p><strong>Descripción:</strong> ${json.descripcion}</p>
-                    <p class="result-price"><strong>Precio:</strong> S/ ${json.precio.toFixed(2)}</p>
-                    <p><strong>Fecha:</strong> ${json.fecha}</p>
-                </div>`;
-
-                form.reset(); // Limpiar campos del formulario
-
-                // Añadir evento para cerrar la tarjeta de resultado
-                resultado.querySelector('.close-btn').addEventListener('click', () => {
-                    resultado.style.display = 'none';
-                    resultado.innerHTML = '';
+                // Petición POST a /cotizacion con los datos del formulario
+                const response = await fetch('/cotizacion', {
+                    method: 'POST',
+                    body: data
                 });
 
-            } else {
-                // Mostrar mensaje de error en caso de fallo en la petición
-                resultado.textContent = 'Error al generar la cotización.';
-            }
+                if (response.ok) {
+                    const json = await response.json();
+
+                    // Mostrar la cotización con el análisis de IA
+                    resultado.innerHTML = `
+                    <div class="cotizacion-card">
+                        <button class="close-btn" title="Cerrar">&times;</button>
+                        <h3>Cotización #${json.numero_cotizacion}</h3>
+        
+                        <div class="cotizacion-section">
+                            <h4>Datos del Cliente</h4>
+                            <p><strong>Nombre:</strong> ${json.cliente}</p>
+                            <p><strong>Email:</strong> ${json.email}</p>
+                        </div>
+        
+        <div class="cotizacion-section">
+            <h4>Servicio Legal</h4>
+            <p><strong>Tipo:</strong> ${json.tipo_servicio}</p>
+            <p><strong>Complejidad:</strong> <span class="tag ${json.analisis_ia.complejidad.toLowerCase()}">${json.analisis_ia.complejidad}</span></p>
+        </div>
+        
+        <div class="cotizacion-section">
+            <h4>Análisis de Precio</h4>
+            <p><strong>Precio Base:</strong> S/ ${json.precio_base.toFixed(2)}</p>
+            <p><strong>Ajuste:</strong> ${json.ajuste_precio_pct}%</p>
+            <p class="result-price"><strong>Precio Final:</strong> S/ ${json.precio_final.toFixed(2)}</p>
+        </div>
+        
+        ${json.analisis_ia.servicios_adicionales.length > 0 ? `
+        <div class="cotizacion-section">
+            <h4>Servicios Adicionales Recomendados</h4>
+            <ul>
+                ${json.analisis_ia.servicios_adicionales.map(item => `<li>${item}</li>`).join('')}
+            </ul>
+        </div>
+        ` : ''}
+        
+        <div class="cotizacion-section">
+            <h4>Propuesta Profesional</h4>
+            <div class="propuesta-texto">${json.analisis_ia.propuesta_texto}</div>
+        </div>
+        
+        <div class="cotizacion-actions">
+            <button class="btn-print"><i class="fas fa-print"></i> Imprimir</button>
+            <button class="btn-send"><i class="fas fa-paper-plane"></i> Enviar al Cliente</button>
+        </div>
+    </div>`;
+
+                    // Agregar estilos para los tags de complejidad
+                    const style = document.createElement('style');
+                    style.textContent = `
+        .tag {
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        .tag.baja { background: #d1fae5; color: #065f46; }
+        .tag.media { background: #fef3c7; color: #92400e; }
+        .tag.alta { background: #fee2e2; color: #991b1b; }
+        .propuesta-texto {
+            white-space: pre-line;
+            line-height: 1.6;
+        }
+    `;
+                    document.head.appendChild(style);
+
+                    form.reset(); // Limpiar campos del formulario
+
+                    // Añadir evento para cerrar la tarjeta de resultado
+                    resultado.querySelector('.close-btn').addEventListener('click', () => {
+                        resultado.style.display = 'none';
+                        resultado.innerHTML = '';
+                    });
+
+                } else {
+                    // Mostrar mensaje de error en caso de fallo en la petición
+                    resultado.textContent = 'Error al generar la cotización.';
+                }
+            });
         });
-    });
     </script>
 
 </body>
+
 </html>
