@@ -128,3 +128,26 @@ apellido-capital-farmer-exam/
     Todo el código está comentado para facilitar mantenimiento.
 
     Los errores de IA y base de datos son controlados adecuadamente.
+
+--- 
+
+## 🔑 Cómo generar tu API Key de Gemini (Google AI Studio)
+
+    Ve a https://makersuite.google.com/app/apikey
+    👉 Haz clic aquí para ir directamente
+
+    Inicia sesión con tu cuenta de Google.
+
+    Acepta los términos si es la primera vez.
+
+    Haz clic en "Create API Key".
+
+    Copia tu clave y guárdala en tu archivo .env como:
+
+    GEMINI_API_KEY=tu_clave_generada_aquí
+
+## 📌 Notas importantes
+
+    Esta clave funciona con el SDK de Google Generative AI (google.generativeai) en Python.
+
+    Tiene límites gratuitos, pero es suficiente para este proyecto.
