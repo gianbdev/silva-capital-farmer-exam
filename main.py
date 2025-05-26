@@ -10,9 +10,10 @@ from starlette.responses import RedirectResponse
 from datetime import datetime
 import sqlite3
 import uuid
+import os
 
-# Configuración de Gemini API
-API_KEY = "AIzaSyAqqC9HtGFu7TGxmRtmV6XfivE_lknNszQ"
+API_KEY = os.getenv("GEMINI_API_KEY")
+
 GEMINI_API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={API_KEY}"
 
 # Importamos lo del auth
